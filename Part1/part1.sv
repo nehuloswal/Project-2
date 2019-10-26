@@ -12,11 +12,40 @@ module memory(clk, data_in, data_out, addr, wr_en);
 	end
 endmodule
 
-module memory_control_x(clk, reset, s_valid_x, s_ready_x, m_addr_x, c_addr_x);
-	input clk, reset
+module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write, conv_done);
+	parameter LOGSIZE = 6, SIZE = 8;
+	input clk, reset, s_valid_x, ready;
+	output s_ready_x, wen;
+	output [LOGSIZE - 1:0] m_addr_x;
+	logic count, conv_done;
+
+	always_ff @(posedge clk) begin
+		if (reset) begin
+			s_ready_x <= 0;
+			m_addr_x <= 0;
+			ready_write <= 0;
+			m_addr_x <= 0;
+		end 
+		else begin
+			if(s_ready_x == 1 && s_valid_x == 1)
+				ready_write <= 1;
+			else
+				ready_write <= 0;
+		end
+		if (ready_write == 1)
+			m_addr_x <= m_addr_x + 1;
+		if (m_addr_x < (SIZE - 1)) 
+			s_ready_x <= 1;
+		else 
+			s_ready_x <= 0;
+		if (conv_done == 1) begin
+			s_ready_x <= 1;
+			m_addr_x <= 0;
+		end
+	end
 endmodule
 
-module memory_control_f();
+module conv_control();
 endmodule
 
 module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_valid_f, s_ready_f, m_data_out_y, m_valid_y, m_ready_y);
