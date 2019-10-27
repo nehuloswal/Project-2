@@ -139,9 +139,11 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
 	output s_ready_x, s_ready_f, m_valid_y;
 	output signed [17:0] m_data_out_y;
 	logic [7:0] w_to_multx, w_to_multf;
-	logic w_wr_en_x, w_wr_en_f;
+	logic w_wr_en_x, w_wr_en_f, w_conv_done, w_read_done_x, w_read_done_f;
 	logic [3:0] w_to_addrx;
 	logic [1:0] w_to_addrf;
 
 	memory #(16, 8, 3) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
 	memory #(16, 4, 2) mf (.clk(clk), .data_in(s_data_in_f), .data_out(w_to_multf), .addr(w_to_addrf), .wr_en(w_wr_en_f));
+	memory_control_xf #(3, 8) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_to_addrx), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x));
+	memory_control_xf #(3, 8) cf (.clk(clk), .reset(reset), .s_valid_x(s_valid_f), .s_ready_x(s_ready_f), .m_addr_x(w_to_addrf), .ready_write(w_wr_en_f), .conv_done(w_conv_done), .read_done(w_read_done_f));
