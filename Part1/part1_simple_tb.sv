@@ -21,12 +21,15 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   input clk, reset, s_valid_x, conv_done;
   output logic s_ready_x, read_done, ready_write;
   output logic [LOGSIZE - 1:0] m_addr_x;
+  logic overflow;
 
   always_comb begin
     if (reset) 
       ready_write = 0;
-    else if (s_ready_x == 1 && s_valid_x == 1)
+    else if (s_ready_x == 1 && s_valid_x == 1 && read_done == 0)
       ready_write = 1;
+  	else if (read_done)
+  		ready_write = 0;
     else
       ready_write = 0;
   end
@@ -37,27 +40,40 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
       m_addr_x <= 0;
      // ready_write <= 0;
       m_addr_x <= 0;
-      read_done <= 0;
-    end 
-    /*else begin
-      if (s_ready_x == 1 && s_valid_x == 1)
-        ready_write <= 1;
-      else
-        ready_write <= 0;
-    end*/
-    if (ready_write == 1)
-      m_addr_x <= m_addr_x + 1;
-    if (m_addr_x < (SIZE - 1)) begin
-      s_ready_x <= 1;
+     // read_done <= 0;
+      overflow <= 0;
+    end
+    else begin 
+      if (ready_write == 1) begin
+        m_addr_x <= m_addr_x + 1;
+      end
+      if (m_addr_x < (SIZE) && (overflow == 0)) begin
+        s_ready_x <= 1;
+        // read_done <= 0;
+      end 
+       if (overflow) begin
+      	s_ready_x <= 0;
+        //read_done <= 1;
+      end
+        if (conv_done == 1) begin
+          s_ready_x <= 1;
+          m_addr_x <= 0;
+      end
+    end
+  end
+
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      overflow <= 0;
       read_done <= 0;
     end
-    else begin
-      s_ready_x <= 0;
+    else if (m_addr_x == (SIZE-1) && (ready_write == 1)) begin
+      overflow <= 1;
       read_done <= 1;
     end
     if (conv_done == 1) begin
-      s_ready_x <= 1;
-      m_addr_x <= 0;
+      overflow <= 0;
+      read_done <= 0;
     end
   end
 endmodule
@@ -95,6 +111,9 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       if ((number_x == 5) && (m_addr_read_f == 3)) begin
         conv_done <= 1;
+        en_acc <= 0;
+       // m_addr_read_x <= 0;
+        //m_addr_read_f <= 0;
       end
       if ((m_valid_y == 1) && (m_ready_y == 0)) begin
         hold_state <= 1;
@@ -102,7 +121,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       else begin
         hold_state <= 0;
-        en_acc <= 1;
+        //en_acc <= 1;
       end
       if ((m_valid_y == 1) && (m_ready_y == 1)) begin
         m_valid_y <= 0;
@@ -113,15 +132,15 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
   end
 endmodule
 
-module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_acc, clr_acc);
+module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_acc, clr_acc, m_data_x, m_data_f);
   input clk, reset, en_acc, clr_acc;
   input [2:0] m_addr_read_x;
   input [1:0] m_addr_read_f;
-  output logic [17:0] m_data_out_y;
-  logic [7:0] m_data_x;
-  logic [3:0] m_data_f;
-  logic [15:0] w_mult_op;
-  logic [17:0] w_addr_op, tmp_out;
+  output logic signed [17:0] m_data_out_y;
+  input signed [7:0] m_data_x;
+  input signed [7:0] m_data_f;
+  logic signed [15:0] w_mult_op;
+  logic signed[17:0] w_addr_op;
 
   always_comb begin
     if (reset) begin
@@ -138,21 +157,16 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
     end
   end
 
-  always_ff @(posedge clk) begin
+  /*always_ff @(posedge clk) begin
     if (reset) begin
       m_data_out_y <= 0;
-      tmp_out <= 0;
     end
     else if (clr_acc) begin
       m_data_out_y <= 0;
-      tmp_out <= 0;
     end
     else if (en_acc)
       m_data_out_y <= w_addr_op;
-    else 
-      m_data_out_y <= tmp_out;
-    tmp_out <= w_addr_op;
-  end
+  end*/
 endmodule
 
 module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_valid_f, s_ready_f, m_data_out_y, m_valid_y, m_ready_y);
@@ -185,7 +199,7 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
 
   conv_control cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .read_done_f(w_read_done_f), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .en_acc(e_acc), .clr_acc(c_acc));
 
-  convolutioner conv(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx), .m_addr_read_f(w_to_addrf), .m_data_out_y(m_data_out_y), .en_acc(e_acc), .clr_acc(c_acc));
+  convolutioner conv(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx), .m_addr_read_f(w_to_addrf), .m_data_out_y(m_data_out_y), .en_acc(e_acc), .clr_acc(c_acc), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
 endmodule
 
 module check_timing();
