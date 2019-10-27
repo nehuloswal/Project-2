@@ -97,7 +97,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       number_x <= 1;
     end
     else begin 
-      if (read_done_x && read_done_f && hold_state == 0) begin
+      if (read_done_x && read_done_f && hold_state == 0 && m_valid_y == 0) begin
         en_acc <= 1;
         clr_acc <= 0;
         m_addr_read_x <= m_addr_read_x + 1;
@@ -109,7 +109,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         m_addr_read_f <= 0;
         m_valid_y <= 1;
       end
-      if ((number_x == 5) && (m_addr_read_f == 3)) begin
+      if ((number_x == 5) && (m_addr_read_f == 3) && hold_state != 1) begin
         conv_done <= 1;
         en_acc <= 0;
        // m_addr_read_x <= 0;
@@ -121,7 +121,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       else begin
         hold_state <= 0;
-        //en_acc <= 1;
+        en_acc <= 1;
       end
       if ((m_valid_y == 1) && (m_ready_y == 1)) begin
         m_valid_y <= 0;
@@ -146,16 +146,20 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
     if (reset) begin
       w_addr_op = 0;
       w_mult_op = 0;
+      m_data_out_y = 0;
     end
     else if (clr_acc) begin
       w_addr_op = 0;
       w_mult_op = 0;
+      m_data_out_y = 0;
     end
     else if (en_acc) begin
       w_mult_op = m_data_x * m_data_f;
       w_addr_op = w_mult_op + m_data_out_y;
+      m_data_out_y = w_addr_op;
     end
   end
+
 
   /*always_ff @(posedge clk) begin
     if (reset) begin
