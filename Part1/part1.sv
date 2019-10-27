@@ -142,6 +142,10 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
 	logic w_wr_en_x, w_wr_en_f;
 	logic [3:0] w_to_addrx;
 	logic [1:0] w_to_addrf;
+	logic e_acc,c_acc;
 
 	memory #(16, 8, 3) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
 	memory #(16, 4, 2) mf (.clk(clk), .data_in(s_data_in_f), .data_out(w_to_multf), .addr(w_to_addrf), .wr_en(w_wr_en_f));
+
+
+	conv_control cc(.reset(reset), .clk(clk), .m_addr_read_x(w_to_addrx), .m_addr_read_f(w_to_addrf), conv_done, read_done_x, read_done_f, .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .en_acc(e_acc), .clr_acc(c_acc));
