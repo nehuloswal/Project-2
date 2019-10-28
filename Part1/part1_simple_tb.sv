@@ -24,8 +24,9 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   logic overflow;
 
   always_comb begin
-    if (reset) 
+    if (reset) begin 
       ready_write = 0;
+    end
     else if (s_ready_x == 1 && s_valid_x == 1 && read_done == 0)
       ready_write = 1;
   	else if (read_done)
@@ -34,29 +35,34 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
       ready_write = 0;
   end
 
+  always_comb begin
+    if (reset || overflow) 
+      s_ready_x <= 0;
+    else if ((m_addr_x < (SIZE) && (overflow == 0)) || conv_done == 1) 
+      s_ready_x <= 1;
+  end
+
   always_ff @(posedge clk) begin
     if (reset) begin
-      s_ready_x <= 0;
+      //s_ready_x <= 0;
       m_addr_x <= 0;
      // ready_write <= 0;
       m_addr_x <= 0;
-     // read_done <= 0;
-      overflow <= 0;
+     // read_done <= 0; 
     end
     else begin 
       if (ready_write == 1) begin
         m_addr_x <= m_addr_x + 1;
       end
-      if (m_addr_x < (SIZE) && (overflow == 0)) begin
+      /*if (m_addr_x < (SIZE) && (overflow == 0)) begin
         s_ready_x <= 1;
-        // read_done <= 0;
       end 
        if (overflow) begin
       	s_ready_x <= 0;
         //read_done <= 1;
-      end
+      end*/
         if (conv_done == 1) begin
-          s_ready_x <= 1;
+          //s_ready_x <= 1;
           m_addr_x <= 0;
       end
     end
@@ -111,9 +117,10 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       if ((number_x == 5) && (m_addr_read_f == 3) && hold_state != 1) begin
         conv_done <= 1;
-        en_acc <= 0;
-       // m_addr_read_x <= 0;
-        //m_addr_read_f <= 0;
+        en_acc <= 0;        
+        m_addr_read_x <= 0;
+        m_addr_read_f <= 0;
+        number_x <= 1;
       end
       if ((m_valid_y == 1) && (m_ready_y == 0)) begin
         hold_state <= 1;
@@ -159,18 +166,6 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
       m_data_out_y = w_addr_op;
     end
   end
-
-
-  /*always_ff @(posedge clk) begin
-    if (reset) begin
-      m_data_out_y <= 0;
-    end
-    else if (clr_acc) begin
-      m_data_out_y <= 0;
-    end
-    else if (en_acc)
-      m_data_out_y <= w_addr_op;
-  end*/
 endmodule
 
 module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_valid_f, s_ready_f, m_data_out_y, m_valid_y, m_ready_y);
@@ -240,10 +235,10 @@ module check_timing();
 
     // Put our test data into these arrays. These are the values we will feed as input into the system.
     // We will do two tests; each will take 8 values for x and 4 values for f.
-    logic [7:0] invals_x[0:15] = '{10,-20,30,-40,50,60,70,80, -90, 100, -110, 120, -50, 40, 30, -20};
-    logic [7:0] invals_f[0:7] = '{10,20,-30,40, -50, -60, 70, 80}; 
+    logic [7:0] invals_x[0:31] = '{10,-20,30,-40,50,60,70,80, -90, 100, -110, 120, -50, 40, 30, -20, 1, 2, 3, 4, 5, 6, 7, 8, 11, 22, 33, 44, 55, 66, 77, 88};
+    logic [7:0] invals_f[0:15] = '{10,20,-30,40, -50, -60, 70, 80, 1, 1, 1, 1, 2, 2, 2, 2}; 
 
-    logic signed [17:0] expectedOut[0:9] = '{-2800, 3600, 400, 1600, 2800, 400, 6000, -2000, 2200, 600};
+    logic signed [17:0] expectedOut[0:19] = '{-2800, 3600, 400, 1600, 2800, 400, 6000, -2000, 2200, 600, 10, 14, 18, 22, 26, 110, 154, 198, 242, 286};
     
     logic [15:0] x_count;
 
@@ -253,7 +248,7 @@ module check_timing();
     // If our random bit rb is set to 1, and if x_count is within the range of our test vector (invals),
     // we will set s_valid_x to 1.
     always @* begin
-       if ((x_count>=0) && (x_count<16) && (rb==1'b1)) begin
+       if ((x_count>=0) && (x_count<32) && (rb==1'b1)) begin
           s_valid_x=1;
        end
        else
@@ -285,7 +280,7 @@ module check_timing();
     
     logic [15:0] f_count;
     always @* begin
-       if ((f_count>=0) && (f_count<8) && (rb2==1'b1)) begin
+       if ((f_count>=0) && (f_count < 17) && (rb2==1'b1)) begin
           s_valid_f=1;
        end
        else
@@ -309,7 +304,7 @@ module check_timing();
     // we will use another random bit (rb3) to determine if we can assert m_ready_y.
     logic [15:0] y_count;
     always @* begin
-        if ((y_count >= 0) && (y_count < 10) && (rb3==1'b1))
+        if ((y_count >= 0) && (y_count < 20) && (rb3==1'b1))
             m_ready_y = 1;
         else
             m_ready_y = 0;
@@ -339,7 +334,7 @@ module check_timing();
         @(posedge clk); #1; reset = 0; 
 
         // wait until the outputs have come out, then finish.
-        wait(y_count==10);
+        wait(y_count==20);
 
         // Now we're done!
         
@@ -360,7 +355,7 @@ module check_timing();
     // In other words, if your system never produces three outputs, this code will stop 
     // the simulation after 1000 clock cycles.
     initial begin
-        repeat(10000) begin
+        repeat(100000) begin
             @(posedge clk);
         end
         $display("Warning: Output not produced within 10000 clock cycles; stopping simulation so it doens't run forever");
