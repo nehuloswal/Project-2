@@ -29,7 +29,7 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
     end
     else if (s_ready_x == 1 && s_valid_x == 1 && read_done == 0)
       ready_write = 1;
-  	else if (read_done)
+  	else if (read_done == 1)
   		ready_write = 0;
     else
       ready_write = 0;
@@ -47,26 +47,18 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
       //s_ready_x <= 0;
       m_addr_x <= 0;
      // ready_write <= 0;
-      m_addr_x <= 0;
+     // m_addr_x <= 0;
      // read_done <= 0; 
     end
-    else begin 
-      if (ready_write == 1) begin
+    else  if (ready_write == 1) begin
         m_addr_x <= m_addr_x + 1;
       end
-      /*if (m_addr_x < (SIZE) && (overflow == 0)) begin
-        s_ready_x <= 1;
-      end 
-       if (overflow) begin
-      	s_ready_x <= 0;
-        //read_done <= 1;
-      end*/
-        if (conv_done == 1) begin
+    else if (conv_done == 1 ) begin
           //s_ready_x <= 1;
           m_addr_x <= 0;
       end
     end
-  end
+  //end
 
   always_ff @(posedge clk) begin
     if (reset) begin
@@ -236,7 +228,7 @@ module check_timing();
     // Put our test data into these arrays. These are the values we will feed as input into the system.
     // We will do two tests; each will take 8 values for x and 4 values for f.
     logic [7:0] invals_x[0:31] = '{10,-20,30,-40,50,60,70,80, -90, 100, -110, 120, -50, 40, 30, -20, 1, 2, 3, 4, 5, 6, 7, 8, 11, 22, 33, 44, 55, 66, 77, 88};
-    logic [7:0] invals_f[0:15] = '{10,20,-30,40, -50, -60, 70, 80, 1, 1, 1, 1, 2, 2, 2, 2}; 
+    logic [7:0] invals_f[0:15] = '{10,20,-30,40, -50, -60, 70, 80, 1, 1, 1, 1, 1, 1, 1, 1}; 
 
     logic signed [17:0] expectedOut[0:19] = '{-2800, 3600, 400, 1600, 2800, 400, 6000, -2000, 2200, 600, 10, 14, 18, 22, 26, 110, 154, 198, 242, 286};
     
@@ -280,7 +272,7 @@ module check_timing();
     
     logic [15:0] f_count;
     always @* begin
-       if ((f_count>=0) && (f_count < 17) && (rb2==1'b1)) begin
+       if ((f_count>=0) && (f_count < 16) && (rb2==1'b1)) begin
           s_valid_f=1;
        end
        else
