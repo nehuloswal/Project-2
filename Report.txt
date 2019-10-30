@@ -1,0 +1,7 @@
+Part 1. 
+Answer 1. We have structured our design as follows
+		Control logic blocks - memory_control_xf (same control logic for both memories)
+							   conv_control (control logic for the datapath)
+		Datapath - convolutioner (Performs the covolution operations)
+
+Answer 2.
