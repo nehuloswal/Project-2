@@ -37,9 +37,9 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
 
   always_comb begin
     if (reset || overflow) 
-      s_ready_x <= 0;
+      s_ready_x = 0;
     else if ((m_addr_x < (SIZE) && (overflow == 0)) || conv_done == 1) 
-      s_ready_x <= 1;
+      s_ready_x = 1;
   end
 
   always_ff @(posedge clk) begin
