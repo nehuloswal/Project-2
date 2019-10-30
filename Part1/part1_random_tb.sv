@@ -37,8 +37,6 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
     end
     else if (s_ready_x == 1 && s_valid_x == 1 && read_done == 0)
       ready_write = 1;
-  	/*else if (read_done == 1)
-  		ready_write = 0;*/
     else
       ready_write = 0;
   end
@@ -46,40 +44,35 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   always_comb begin
     if (reset || overflow) 
       s_ready_x = 0;
-    else if ((m_addr_x < (SIZE) && (overflow == 0)) || (conv_done == 1 && valid_y == 0)) 
+    else if ((m_addr_x < (SIZE) && (overflow == 0)) /*|| (conv_done == 1 && valid_y == 0)*/) 
       s_ready_x = 1;
   end
 
   always_ff @(posedge clk) begin
-    if (reset) begin
-      //s_ready_x <= 0;
+    if (reset) begin;
       m_addr_x <= 0;
-     // ready_write <= 0;
-     // m_addr_x <= 0;
-     // read_done <= 0; 
+      
     end
     else  if (ready_write == 1) begin
         m_addr_x <= m_addr_x + 1;
       end
     else if (conv_done == 1 && valid_y == 0) begin
-          //s_ready_x <= 1;
           m_addr_x <= 0;
       end
     end
-  //end
 
   always_ff @(posedge clk) begin
     if (reset) begin
       overflow <= 0;
       read_done <= 0;
     end
+    else if (conv_done == 1 && ready_write == 0 && wait_on_another && valid_y == 0) begin
+      overflow <= 0;
+      read_done <= 0;
+    end    
     else if (m_addr_x == (SIZE-1) && (ready_write == 1)) begin
       overflow <= 1;
       read_done <= 1;
-    end
-    else if (conv_done == 1 && ready_write == 0 && wait_on_another) begin
-      overflow <= 0;
-      read_done <= 0;
     end
   end
 endmodule
@@ -89,7 +82,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
   output logic [2:0] m_addr_read_x;
   output logic [1:0] m_addr_read_f;
   output logic conv_done, m_valid_y, en_acc, clr_acc;
-  logic hold_state;
+  logic hold_state, en_val_y;
   logic [2:0] number_x;
 
   always_ff @(posedge clk) begin
@@ -101,19 +94,22 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       en_acc <= 0;
       clr_acc <= 1;
       number_x <= 1;
+      en_val_y <= 0;
     end
     else begin 
-      if (read_done_x && read_done_f && hold_state == 0 && m_valid_y == 0) begin
+      
+      if (read_done_x && read_done_f && hold_state == 0 && m_valid_y == 0 && en_val_y == 0) begin
         en_acc <= 1;
         clr_acc <= 0;
         m_addr_read_x <= m_addr_read_x + 1;
         m_addr_read_f <= m_addr_read_f + 1;
       end
-      if ((m_addr_read_f == 3) && (hold_state == 0)) begin
+      if ((m_addr_read_f == 3) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
         m_addr_read_x <= number_x;
         number_x <= number_x + 1;
         m_addr_read_f <= 0;
-        m_valid_y <= 1;
+        en_val_y <= 1;
+        //en_acc <= 0;
       end
       if ((number_x == 5) && (m_addr_read_f == 3) && hold_state != 1) begin
         conv_done <= 1;
@@ -122,7 +118,11 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         m_addr_read_f <= 0;
         number_x <= 1;
       end
-
+      if (en_val_y) begin
+      	m_valid_y <= 1;
+      	en_val_y <= 0;
+      	en_acc <= 0;
+      end
       if ((m_valid_y == 1) && (m_ready_y == 0)) begin
         hold_state <= 1;
         en_acc <= 0;
@@ -137,6 +137,8 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         conv_done <= 0;
         clr_acc <= 1;
       end
+      if (en_val_y == 1)
+      	en_acc <= 0;
     end
   end
 endmodule
@@ -155,18 +157,26 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
     if (reset) begin
       w_addr_op = 0;
       w_mult_op = 0;
-      m_data_out_y = 0;
+      //m_data_out_y = 0;
     end
     else if (clr_acc) begin
       w_addr_op = 0;
       w_mult_op = 0;
-      m_data_out_y = 0;
+      //m_data_out_y = 0;
     end
     else if (en_acc) begin
       w_mult_op = m_data_x * m_data_f;
       w_addr_op = w_mult_op + m_data_out_y;
-      m_data_out_y = w_addr_op;
     end
+  end
+
+  always_ff @(posedge clk) begin
+  	if (reset || (clr_acc == 1))
+  		m_data_out_y <= 0;
+  	else if (en_acc)
+      m_data_out_y <= w_addr_op;
+  	else
+  		m_data_out_y <= m_data_out_y;
   end
 endmodule
 
@@ -325,7 +335,8 @@ module tbench1();
             if (m_data_out_y !== expectedOut[y_count]) begin
                 $display("ERROR:   y[%d] = %d    expected output = %d", y_count, m_data_out_y, expectedOut[y_count]);
                 errors = errors+1;
-                $stop;
+                if (errors > 0)
+               	 $stop;
             end
             y_count = y_count+1; 
         end 
