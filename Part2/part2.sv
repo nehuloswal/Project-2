@@ -94,14 +94,14 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         m_addr_read_x <= m_addr_read_x + 1;
         m_addr_read_f <= m_addr_read_f + 1;
       end
-      if ((m_addr_read_f == 3) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
+      if ((m_addr_read_f == 31) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
         m_addr_read_x <= number_x;
         number_x <= number_x + 1;
         m_addr_read_f <= 0;
         en_val_y <= 1;
         //en_acc <= 0;
       end
-      if ((number_x == 5) && (m_addr_read_f == 3) && hold_state != 1) begin
+      if ((number_x == 225) && (m_addr_read_f == 31) && hold_state != 1) begin
         conv_done <= 1;
         en_acc <= 0;        
         m_addr_read_x <= 0;
@@ -137,11 +137,11 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   input clk, reset, en_acc, clr_acc;
   input [2:0] m_addr_read_x;
   input [1:0] m_addr_read_f;
-  output logic signed [17:0] m_data_out_y;
+  output logic signed [20:0] m_data_out_y;
   input signed [7:0] m_data_x;
   input signed [7:0] m_data_f;
   logic signed [15:0] w_mult_op;
-  logic signed[17:0] w_addr_op;
+  logic signed[20:0] w_addr_op;
 
   always_comb begin
     if (reset) begin
@@ -176,7 +176,7 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
   input clk, reset, s_valid_x, s_valid_f, m_ready_y;
   input signed [7:0] s_data_in_x, s_data_in_f;
   output s_ready_x, s_ready_f, m_valid_y;
-  output signed [17:0] m_data_out_y;
+  output signed [20:0] m_data_out_y;
   logic [7:0] w_to_multx, w_to_multf;
   logic w_wr_en_x, w_wr_en_f, w_conv_done, w_read_done_x, w_read_done_f;
   logic [2:0] w_to_addrx, w_read_addr_x, w_write_addr_x;
@@ -193,12 +193,12 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
     else
       w_to_addrf = w_read_addr_f;
   end
-  memory #(8, 8, 3) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
-  memory #(8, 4, 2) mf (.clk(clk), .data_in(s_data_in_f), .data_out(w_to_multf), .addr(w_to_addrf), .wr_en(w_wr_en_f));
+  memory #(8, 256, 8) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
+  memory #(8, 32, 5) mf (.clk(clk), .data_in(s_data_in_f), .data_out(w_to_multf), .addr(w_to_addrf), .wr_en(w_wr_en_f));
 
-  memory_control_xf #(3, 8) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y), .wait_on_another(w_read_done_f));
+  memory_control_xf #(8, 256) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y), .wait_on_another(w_read_done_f));
 
-  memory_control_xf #(2, 4) cf (.clk(clk), .reset(reset), .s_valid_x(s_valid_f), .s_ready_x(s_ready_f), .m_addr_x(w_write_addr_f), .ready_write(w_wr_en_f), .conv_done(w_conv_done), .read_done(w_read_done_f), .valid_y(m_valid_y), .wait_on_another(w_read_done_x));
+  memory_control_xf #(5, 32) cf (.clk(clk), .reset(reset), .s_valid_x(s_valid_f), .s_ready_x(s_ready_f), .m_addr_x(w_write_addr_f), .ready_write(w_wr_en_f), .conv_done(w_conv_done), .read_done(w_read_done_f), .valid_y(m_valid_y), .wait_on_another(w_read_done_x));
 
   conv_control cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .read_done_f(w_read_done_f), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .en_acc(e_acc), .clr_acc(c_acc));
 

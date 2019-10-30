@@ -1,0 +1,203 @@
+m255
+K4
+z2
+!s11f vlog 2019.3 2019.07, Jul 24 2019
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/home5/patilh/ese507work/proj2/Project-2/Part2
+vcheck_timing
+Z1 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+!s110 1572466862
+!i10b 1
+!s100 Qkel3_V0i2ZiV6C]Ge^AV3
+!s11b Yd18iRO]^WY;4GDhX[H1G1
+IlI@2];aI?JP?`Q4>ZGaa01
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1572466677
+Z3 8part2_simple_tb.sv
+Z4 Fpart2_simple_tb.sv
+!i122 -1
+L0 212
+Z5 OP;L;2019.3;69
+r1
+!s85 0
+31
+!s108 1572466862.000000
+Z6 !s107 part2_simple_tb.sv|
+Z7 !s90 part2_simple_tb.sv|
+!i113 1
+Z8 tCvgOpt 0
+vconv_128_32
+R1
+Z9 !s110 1572466965
+!i10b 1
+!s100 eJY5FWFj`YP=;E<`hIkBX0
+!s11b Ti^TJ>KRZUh2H4:b2B]^K3
+I9PoiI`n1MD>f:aVdh04ZL1
+R2
+S1
+R0
+Z10 w1572466753
+Z11 8part2_random_tb.sv
+Z12 Fpart2_random_tb.sv
+!i122 -1
+L0 186
+R5
+r1
+!s85 0
+31
+Z13 !s108 1572466965.000000
+!s107 part2_random_tb.sv|
+Z14 !s90 part2_random_tb.sv|
+!i113 1
+R8
+vconv_8_4
+R1
+!s110 1572466292
+!i10b 1
+!s100 1fI>b9m2GknJHZS3<EQE[1
+!s11b hShG8>3c<zKfAFe_zRUR?3
+IB^kGj=oz:5QhoTdXJe=HB2
+R2
+S1
+R0
+w1572466103
+R3
+R4
+!i122 -1
+L0 179
+R5
+r1
+!s85 0
+31
+!s108 1572466292.000000
+R6
+R7
+!i113 1
+R8
+vconv_control
+R1
+R9
+!i10b 1
+!s100 Om71Q7@dc7a:JnY^?IN0L3
+!s11b 87mV_=XJ<>3]IzYjF;S[?3
+IM1<;ZQd4i3:Z]V7NZezV52
+R2
+S1
+R0
+R10
+R11
+R12
+!i122 -1
+L0 81
+R5
+r1
+!s85 0
+31
+R13
+Z15 !s107 part2_random_tb.sv|
+R14
+!i113 1
+R8
+vconvolutioner
+R1
+R9
+!i10b 1
+!s100 R_AQ]_XJ6Z2nX6gojPTUk2
+!s11b bngOTV`_KYlG9>PmZeHo=2
+IIH?2KOi8Qk[gfQ^:CF^]K1
+R2
+S1
+R0
+R10
+R11
+R12
+!i122 -1
+L0 147
+R5
+r1
+!s85 0
+31
+R13
+R15
+R14
+!i113 1
+R8
+vmemory
+R1
+R9
+!i10b 1
+!s100 C_i3bS_VQk5_O4Wmb;DEF2
+!s11b X2UMWG1LD?cmnAgi_5:oP2
+IYaXHNI>OWX^:?hBMnLGjf0
+R2
+S1
+R0
+R10
+R11
+R12
+!i122 -1
+L0 12
+R5
+r1
+!s85 0
+31
+R13
+R15
+R14
+!i113 1
+R8
+vmemory_control_xf
+R1
+R9
+!i10b 1
+!s100 DnjAc?O3gL0kK8VeKH<790
+!s11b [G5DiiH0>fSTW<cN;;jbW2
+I[@WM_=^P9]z4bOMFd`9XZ1
+R2
+S1
+R0
+R10
+R11
+R12
+!i122 -1
+L0 26
+R5
+r1
+!s85 0
+31
+R13
+R15
+R14
+!i113 1
+R8
+vtbench2
+R1
+R9
+!i10b 1
+!s100 8cHDHVK1WI7DXBc4;1aej1
+!s11b 2eW@=OFlWPN<:1F21`TQ@2
+ID_>zjiTcoGYHBe3UXbb9e3
+R2
+S1
+R0
+R10
+R11
+R12
+!i122 -1
+L0 219
+R5
+r1
+!s85 0
+31
+R13
+R15
+R14
+!i113 1
+R8
