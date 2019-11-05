@@ -1,0 +1,18 @@
+Part 1. 
+Answer 1. We have structured our design as follows
+		Control logic blocks - memory_control_xf (same control logic for both memories)
+							   conv_control (control logic for the datapath)
+		Datapath - convolutioner (Performs the covolution operations)
+
+Answer a. Arithematic operations required for 8x4 convolution
+Multiplication - 4
+Addition - 4
+Number of iterations - 5
+Total number of arithematic operations = (Multiplications + Additions) * No of Iterations
+									   = (4 + 4) * 5
+									   = 40 Arithematic operations
+Genaralization of number of arithematic operations
+Number of multiplications depends only of length of f which is M
+Number of additions is dependant on number of multiplications which is again M
+For one complete convolution operation on vector x of length N and vector f of length M we need
+N - M + 1 iterations. Hence the total number 
