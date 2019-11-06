@@ -43,7 +43,7 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   always_comb begin
     if (reset || overflow) 
       s_ready_x = 0;
-    else if ((m_addr_x < (SIZE) && (overflow == 0)) /*|| (conv_done == 1 && valid_y == 0)*/) 
+    else if ((m_addr_x < (SIZE) && (overflow == 0) && conv_done == 0 && read_done == 0) /*|| (conv_done == 1 && valid_y == 0)*/) 
       s_ready_x = 1;
     else
       s_ready_x = 0;
@@ -57,9 +57,9 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
     else  if (ready_write == 1) begin
         m_addr_x <= m_addr_x + 1;
       end
-    else if (conv_done == 1 && valid_y == 0) begin
+    /*else if (conv_done == 1 && valid_y == 0) begin
           m_addr_x <= 0;
-      end
+      end*/
     end
 
   always_ff @(posedge clk) begin
@@ -103,8 +103,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         en_acc <= 1;
         clr_acc <= 0;
         m_addr_read_x <= m_addr_read_x + 1;
-        if (m_addr_read_x == 4)
-          en_val_y <= 1; 
+        en_val_y <= 1; 
       end
       /*if ((m_addr_read_f == 31) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
         m_addr_read_x <= number_x;
@@ -120,10 +119,12 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
        // number_x <= 1;
       end
      if (en_val_y) begin
-        m_valid_y <= 1;
-        en_val_y <= 0;
-        en_acc <= 0;
-      end
+     	if (m_addr_read_x < 5 || hold_state == 1) begin
+        	m_valid_y <= 1;
+        	en_val_y <= 0;
+        	en_acc <= 0;
+    	end
+    end
       if ((m_valid_y == 1) && (m_ready_y == 0)) begin
         hold_state <= 1;
         en_acc <= 0;
@@ -268,9 +269,6 @@ module conv_8_4(clk, reset, s_data_in_x, s_valid_x, s_ready_x, s_data_in_f, s_va
 
   convolutioner conv(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx), .m_addr_read_f(w_to_addrf), .m_data_out_y(m_data_out_y), .en_acc(e_acc), .clr_acc(c_acc), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
 endmodule
-
-
-
 module tbench1();
 
     parameter  NUMITS     = 100000, N = 8, M = 4;
