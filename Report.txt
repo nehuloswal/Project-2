@@ -15,4 +15,13 @@ Genaralization of number of arithematic operations
 Number of multiplications depends only of length of f which is M
 Number of additions is dependant on number of multiplications which is again M
 For one complete convolution operation on vector x of length N and vector f of length M we need
-N - M + 1 iterations. Hence the total number 
+N - M + 1 iterations. Hence the total number of operations is (M + M) * (N - M + 1)
+which is 2M(N - M + 1)
+
+Answer b. The control module controlling the convolution keeps track by use of the following signals. 
+1. read_done_x, read_done_f - This indicates that the memories have done loading the data. Only when both of these signals are high can the convolution begin.
+2. number_x -  This is a counter which maintains how many outputs have been computed. When it is equal to 5 (which is M + 1) then the convolution is done.
+3. conv_done - this signal is used to reset read_done_f and read_done_x to 0
+4. hold_state - this signal pauses the calculations of datapath when we have a valid output but the output hasnt been collected.
+5. m_valid_y - m_valid_y is set everytime read_addr_f is set to 3 indicating that multiplications and accumulations are complete.
+
