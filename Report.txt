@@ -21,7 +21,28 @@ which is 2M(N - M + 1)
 Answer b. The control module controlling the convolution keeps track by use of the following signals. 
 1. read_done_x, read_done_f - This indicates that the memories have done loading the data. Only when both of these signals are high can the convolution begin.
 2. number_x -  This is a counter which maintains how many outputs have been computed. When it is equal to 5 (which is M + 1) then the convolution is done.
-3. conv_done - this signal is used to reset read_done_f and read_done_x to 0
+3. conv_done - this signal is used to reset read_done_f and read_done_x to 0 and to indicate convolution is done.
 4. hold_state - this signal pauses the calculations of datapath when we have a valid output but the output hasnt been collected.
 5. m_valid_y - m_valid_y is set everytime read_addr_f is set to 3 indicating that multiplications and accumulations are complete.
+
+Addresses of memory f are used to keep track when to output the result.
+
+Answer c. The highest 8 bit input is 255. So the multiplier will have maximum output when both inputs are 255. Hence the maximum output is (255*255) 65025. Since maximum value repesented by 16 bits is 65535. Since the max output of multiplier will always be less than max value of 16 bits this ensures that the multiplier product does not overflow. Similiarly the 16 bit multiplier product will be accumulated 4 times. Hence max possible output will be 65025 * 4 = 260100 and the max value represented by 18 bits is 262143 which gaurantees no overflow. A simpler way to look at this since we are adding 16 bit 4 times and 4 is 2^2, hence we need to add 2 more bits to prevent overflow.
+
+Answer d. We extended the simple testbench for 20 outputs. As we ran into a peculiar situation where if multiplier output and previous accumulator output had same values adder would not add them. The reason was later found out to be a presence of latch at the output which modelsim was not able to properly simulate. Apart from this a simple stop statement for no of errors exceeding 4 in the random testbench was sufficient to debug timing issues and corner cases like conv_done signal staying high for too long etc. 
+
+Part2
+
+Answer. In this convolution the multplier output will remain 16 bits but since this 16 bits is added 32 times which is 2^5, we need extra 5 bits (total 16 + 5 = 21 bits) to guarantee no overflow. This can be simply verified as follows, as in previous part multplier will have max output as 65025, hence the adders max output will be 65025*32 which 2080800 and the smallest bits which can represnt this without overflowing is 21 (max value 2097151).
+Control logic for 128x32 convolution
+There was no major change in the control logic. Only changes were to the address sizes, sizes of the convolvers output sizes and some conditions to denote conv_done and condition to assert valid_y.
+
+Part3 
+Answer. We tried mainly two things.
+1. Increasing parallelism - We increased the number of multpliers to 32 (or Length of vextor f) and connected their outputs to a single adder with 32 inputs. Hence a single output is ready in one clock cycle. This offered us a significant reduction in number of clock cycles required for one complete convolution. For part 2 we required 3424 clock cycles while after introducing parallelism we were able to perform same operation in 417 clock cycles. This is a 8 times improvement.
+2. Using Designware modules: We used DW02_mult instance and replaced our 32 multipliers with this Designware multiplier. We tried for designware adder but we could not find a suitable replacement for 32 input adder. This helped us improve our clock period from 2.30 nsec to 2.25 nsec.
+
+We also tried a couple of ideas but could not implement them without errors.
+1. Overlapping input and output - We used different read and write addresses for memory and based on their current locations, we tried to load values for next convolution while the current convolution was being performed. However we were unsucessful in solving all the timing problems by the submission deadline and hence this approach did not work.
+2. Replacing the input memory with registers - We had thought of using the input memory with registers. This would have enabled us to complete one convolution in 130 clock cycles (128 clock cycles to load data and 1 clock cycle to perform the arithematic operation and 1 clock cycle to output the result). However we never got time to implement this.
 
