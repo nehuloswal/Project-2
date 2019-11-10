@@ -108,11 +108,11 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
        // number_x <= 1;
       end
      if (en_val_y) begin
-      if (m_addr_read_x < 97 || hold_state == 1) begin
-          m_valid_y <= 1;
-          en_val_y <= 0;
-          en_acc <= 0;
-      end
+     	if (m_addr_read_x < 97 || hold_state == 1) begin
+        	m_valid_y <= 1;
+        	en_val_y <= 0;
+        	en_acc <= 0;
+    	end
     end
       if ((m_valid_y == 1) && (m_ready_y == 0)) begin
         hold_state <= 1;
@@ -145,11 +145,15 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   input signed [7:0] m_data_x [31:0];
   input signed [7:0] m_data_f [31:0];
   logic signed [15:0] w_mult_op [31:0];
+  logic signed [15:0] w_mult_op_tmp [31:0];
   logic signed[20:0] w_addr_op;
+  logic tC;
 
 genvar i;
 generate
 for(i = 0; i < 32; i++) begin
+	assign tC = 1;
+	DW02_mult #(8, 8) U1 ( .A(m_data_x[i]), .B(m_data_f[i]), .TC(tC), .PRODUCT(w_mult_op_tmp[i]) );
   always_comb begin
     if (reset) begin
      // w_addr_op = 0;
@@ -159,7 +163,7 @@ for(i = 0; i < 32; i++) begin
       w_mult_op[i] = 0;
     end
     else if (en_acc) 
-        w_mult_op[i] = m_data_x[i] * m_data_f[i];
+   		w_mult_op[i] = w_mult_op_tmp[i];
     else
         w_mult_op[i] = 0;
     end
@@ -175,9 +179,9 @@ for(i = 0; i < 32; i++) begin
     end
     else if (en_acc) 
        w_addr_op = w_mult_op[0] + w_mult_op[1] + w_mult_op[2] + w_mult_op[3] + w_mult_op[4] + w_mult_op[5] + w_mult_op[6] + w_mult_op[7] +
-       w_mult_op[8] + w_mult_op[9] + w_mult_op[10] + w_mult_op[11] + w_mult_op[12] + w_mult_op[13] + w_mult_op[14] + w_mult_op[15] + 
-       w_mult_op[16] + w_mult_op[17] + w_mult_op[18] + w_mult_op[19] + w_mult_op[20] + w_mult_op[21] + w_mult_op[22] + w_mult_op[23] +
-       w_mult_op[24] + w_mult_op[25] + w_mult_op[26] + w_mult_op[27] + w_mult_op[28] + w_mult_op[29] + w_mult_op[30] + w_mult_op[31];
+   	   w_mult_op[8] + w_mult_op[9] + w_mult_op[10] + w_mult_op[11] + w_mult_op[12] + w_mult_op[13] + w_mult_op[14] + w_mult_op[15] + 
+   	   w_mult_op[16] + w_mult_op[17] + w_mult_op[18] + w_mult_op[19] + w_mult_op[20] + w_mult_op[21] + w_mult_op[22] + w_mult_op[23] +
+   	   w_mult_op[24] + w_mult_op[25] + w_mult_op[26] + w_mult_op[27] + w_mult_op[28] + w_mult_op[29] + w_mult_op[30] + w_mult_op[31];
     else
         w_addr_op = 0;
     end

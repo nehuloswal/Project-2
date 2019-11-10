@@ -145,11 +145,15 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   input signed [7:0] m_data_x [31:0];
   input signed [7:0] m_data_f [31:0];
   logic signed [15:0] w_mult_op [31:0];
+  logic signed [15:0] w_mult_op_tmp [31:0];
   logic signed[20:0] w_addr_op;
+  logic tC;
 
 genvar i;
 generate
 for(i = 0; i < 32; i++) begin
+	assign tC = 1;
+	DW02_mult #(8, 8) U1 ( .A(m_data_x[i]), .B(m_data_f[i]), .TC(tC), .PRODUCT(w_mult_op_tmp[i]) );
   always_comb begin
     if (reset) begin
      // w_addr_op = 0;
@@ -159,7 +163,7 @@ for(i = 0; i < 32; i++) begin
       w_mult_op[i] = 0;
     end
     else if (en_acc) 
-        w_mult_op[i] = m_data_x[i] * m_data_f[i];
+   		w_mult_op[i] = w_mult_op_tmp[i];
     else
         w_mult_op[i] = 0;
     end

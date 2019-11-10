@@ -1,0 +1,835 @@
+
+                      Design Compiler Graphical
+                            DC Ultra (TM)
+                             DFTMAX (TM)
+                         Power Compiler (TM)
+                           DesignWare (R)
+                           DC Expert (TM)
+                         Design Vision (TM)
+                          HDL Compiler (TM)
+                         VHDL Compiler (TM)
+                            DFT Compiler
+                        Library Compiler (TM)
+                         Design Compiler(R)
+
+         Version J-2014.09-SP5-2 for RHEL64 -- Jul 11, 2015
+               Copyright (c) 1988-2015 Synopsys, Inc.
+
+This software and the associated documentation are confidential and 
+proprietary to Synopsys, Inc. Your use or disclosure of this software 
+is subject to the terms and conditions of a written license agreement 
+between you, or your company, and Synopsys, Inc.
+
+Initializing...
+##############################################
+# Setup: fill out the following parameters: name of clock signal, clock period (ns),
+# reset signal name (if used), name of top-level module, name of source file
+set CLK_NAME "clk";
+clk
+set CLK_PERIOD 2.25;
+2.25
+set RST_NAME "reset";
+reset
+set TOP_MOD_NAME "conv_128_32";
+conv_128_32
+set SRC_FILE "part3.sv";
+part3.sv
+# If you have multiple source files, change the line above to list them all like this:
+# set SRC_FILE [list "file1.sv" "file2.sv"];
+###############################################
+source setupdc.tcl
+NangateOpenCellLibrary_typical.db dw_foundation.sldb
+file mkdir work_synth
+define_design_lib WORK -path work_synth
+1
+analyze $SRC_FILE -format sverilog
+Running PRESTO HDLC
+Searching for ./part3.sv
+Compiling source file ./part3.sv
+Presto compilation completed successfully.
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/dw_foundation.sldb'
+1
+elaborate -work WORK $TOP_MOD_NAME
+Loading db file '/usr/local/synopsys/syn/libraries/syn/gtech.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'conv_128_32'.
+Information: Building the design 'memory' instantiated from design 'conv_128_32' with
+	the parameters "8,128,7". (HDL-193)
+Warning:  ./part3.sv:20: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine memory_WIDTH8_SIZE128_LOGSIZE7 line 18 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |  256  |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Statistics for MUX_OPs
+============================================================================
+|         block name/line           | Inputs | Outputs | # sel inputs | MB |
+============================================================================
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+| memory_WIDTH8_SIZE128_LOGSIZE7/20 |  128   |    8    |      7       | N  |
+============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'memory' instantiated from design 'conv_128_32' with
+	the parameters "8,32,5". (HDL-193)
+Warning:  ./part3.sv:20: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine memory_WIDTH8_SIZE32_LOGSIZE5 line 18 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |  256  |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Statistics for MUX_OPs
+===========================================================================
+|         block name/line          | Inputs | Outputs | # sel inputs | MB |
+===========================================================================
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+| memory_WIDTH8_SIZE32_LOGSIZE5/20 |   32   |    8    |      5       | N  |
+===========================================================================
+Presto compilation completed successfully.
+Information: Building the design 'memory_control_xf' instantiated from design 'conv_128_32' with
+	the parameters "7,128". (HDL-193)
+Warning:  ./part3.sv:71: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE7_SIZE128 line 52 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    m_addr_x_reg     | Flip-flop |   7   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE7_SIZE128 line 62 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    read_done_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    overflow_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'memory_control_xf' instantiated from design 'conv_128_32' with
+	the parameters "5,32". (HDL-193)
+Warning:  ./part3.sv:71: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE5_SIZE32 line 52 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    m_addr_x_reg     | Flip-flop |   5   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE5_SIZE32 line 62 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    read_done_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    overflow_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'conv_control'. (HDL-193)
+
+Inferred memory devices in process
+	in routine conv_control line 85 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   dis_conv_y_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|  m_addr_read_f_reg  | Flip-flop |   5   |  Y  | N  | N  | N  | N  | N  | N  |
+|  m_addr_read_x_reg  | Flip-flop |   7   |  Y  | N  | N  | N  | N  | N  | N  |
+|    conv_done_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    m_valid_y_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|     en_acc_reg      | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|     clr_acc_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    en_val_y_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|   hold_state_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'convolutioner'. (HDL-193)
+
+Inferred memory devices in process
+	in routine convolutioner line 189 in file
+		'./part3.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|  m_data_out_y_reg   | Flip-flop |  21   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+1
+###### CLOCKS AND PORTS #######
+set CLK_PORT [get_ports $CLK_NAME]
+{clk}
+set TMP1 [remove_from_collection [all_inputs] $CLK_PORT]
+{reset s_data_in_x[7] s_data_in_x[6] s_data_in_x[5] s_data_in_x[4] s_data_in_x[3] s_data_in_x[2] s_data_in_x[1] s_data_in_x[0] s_valid_x s_data_in_f[7] s_data_in_f[6] s_data_in_f[5] s_data_in_f[4] s_data_in_f[3] s_data_in_f[2] s_data_in_f[1] s_data_in_f[0] s_valid_f m_ready_y}
+set INPUTS [remove_from_collection $TMP1 $RST_NAME]
+{s_data_in_x[7] s_data_in_x[6] s_data_in_x[5] s_data_in_x[4] s_data_in_x[3] s_data_in_x[2] s_data_in_x[1] s_data_in_x[0] s_valid_x s_data_in_f[7] s_data_in_f[6] s_data_in_f[5] s_data_in_f[4] s_data_in_f[3] s_data_in_f[2] s_data_in_f[1] s_data_in_f[0] s_valid_f m_ready_y}
+create_clock -period $CLK_PERIOD [get_ports clk]
+1
+# set delay for inputs to be 0.2ns
+set_input_delay 0.2 -max -clock clk $INPUTS
+1
+set_output_delay 0.2 -max -clock clk [all_outputs]
+1
+###### OPTIMIZATION #######
+set_max_area 0 
+1
+###### RUN #####
+compile_ultra
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | J-2014.09-DWBB_201409.5.2 |   *     |
+| Licensed DW Building Blocks        | J-2014.09-DWBB_201409.5.2 |   *     |
+============================================================================
+
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 17 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Loaded alib file './alib-52/NangateOpenCellLibrary_typical.db.alib'
+  Building model 'DW01_NAND2'
+Information: Ungrouping hierarchy cx before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy cf before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy cc before Pass 1 (OPT-776)
+Information: Ungrouping 3 of 7 hierarchies before Pass 1 (OPT-775)
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'memory_WIDTH8_SIZE128_LOGSIZE7'
+ Implement Synthetic for 'memory_WIDTH8_SIZE128_LOGSIZE7'.
+Information: Added key list 'DesignWare' to design 'memory_WIDTH8_SIZE128_LOGSIZE7'. (DDB-72)
+  Processing 'memory_WIDTH8_SIZE32_LOGSIZE5'
+ Implement Synthetic for 'memory_WIDTH8_SIZE32_LOGSIZE5'.
+Information: Added key list 'DesignWare' to design 'memory_WIDTH8_SIZE32_LOGSIZE5'. (DDB-72)
+  Processing 'convolutioner'
+ Implement Synthetic for 'convolutioner'.
+  Processing 'conv_128_32'
+Information: Added key list 'DesignWare' to design 'conv_128_32'. (DDB-72)
+Information: The register 'cc/m_addr_read_f_reg[4]' is a constant and will be removed. (OPT-1206)
+Information: The register 'cc/m_addr_read_f_reg[3]' is a constant and will be removed. (OPT-1206)
+Information: The register 'cc/m_addr_read_f_reg[2]' is a constant and will be removed. (OPT-1206)
+Information: The register 'cc/m_addr_read_f_reg[1]' is a constant and will be removed. (OPT-1206)
+Information: The register 'cc/m_addr_read_f_reg[0]' is a constant and will be removed. (OPT-1206)
+Information: In design 'conv_128_32', the register 'cx/read_done_reg' is removed because it is merged to 'cx/overflow_reg'. (OPT-1215)
+Information: In design 'conv_128_32', the register 'cf/read_done_reg' is removed because it is merged to 'cf/overflow_reg'. (OPT-1215)
+ Implement Synthetic for 'conv_128_32'.
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Information: Complementing port 'wr_en' in design 'memory_WIDTH8_SIZE128_LOGSIZE7'.
+	 The new name of the port is 'wr_en_BAR'. (OPT-319)
+Information: Complementing port 'en_acc' in design 'convolutioner'.
+	 The new name of the port is 'en_acc_BAR'. (OPT-319)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:01:55   62844.1      0.91      62.6    6002.9                           1469118.1250
+    0:01:56   62843.3      0.91      62.6    6002.9                           1469089.5000
+    0:01:56   62843.3      0.91      62.6    6002.9                           1469089.5000
+    0:01:56   62843.8      0.91      62.6    6002.9                           1469125.5000
+  Re-synthesis Optimization (Phase 1)
+  Re-synthesis Optimization (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+  Global Optimization (Phase 31)
+  Mapping 'convolutioner_DP_OP_192J3_122_4433_0'
+  Selecting critical implementations
+  Mapping 'convolutioner_DW02_mult_0'
+  Mapping 'convolutioner_DW02_mult_1'
+Information: Added key list 'DesignWare' to design 'convolutioner'. (DDB-72)
+    0:02:33   59922.1      0.35       2.5    1982.8                           1311252.0000
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:02:33   59922.1      0.35       2.5    1982.8                           1311252.0000
+    0:02:33   59922.1      0.35       2.5    1982.8                           1311252.0000
+    0:02:36   59920.5      0.35       2.5    1402.8                           1268275.5000
+    0:02:36   59920.5      0.35       2.5    1402.8                           1268275.5000
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:41   60262.8      0.28       1.9    1402.8                           1280157.8750
+    0:02:57   61552.4      0.12       0.7    1402.8                           1325910.7500
+    0:02:57   61552.4      0.12       0.7    1402.8                           1325910.7500
+    0:03:07   62019.2      0.08       0.4    1402.8                           1340358.2500
+
+  Beginning Delay Optimization
+  ----------------------------
+    0:03:07   62019.0      0.08       0.4    1402.8                           1340322.2500
+    0:03:09   62095.8      0.06       0.3    1402.8                           1343204.6250
+    0:03:09   62095.8      0.06       0.3    1402.8                           1343204.6250
+    0:03:11   62117.9      0.06       0.3    1402.8                           1343899.7500
+    0:03:11   62118.4      0.07       0.3    1402.8                           1343870.7500
+    0:03:11   62118.7      0.06       0.3    1402.8                           1343850.1250
+    0:03:11   62118.7      0.06       0.3    1402.8                           1343850.1250
+    0:03:13   62181.0      0.06       0.3    1402.8                           1345888.1250
+    0:03:13   62181.8      0.06       0.3    1402.8                           1345902.3750
+
+
+  Beginning Design Rule Fixing  (max_capacitance)
+  ----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:03:13   62181.8      0.06       0.3    1402.8                           1345902.3750
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+  Global Optimization (Phase 34)
+    0:03:21   62125.4      0.03       0.1       0.0 conv/m_data_out_y_reg[16]/D 1343745.7500
+    0:03:22   62121.6      0.03       0.1       0.0                           1343525.0000
+    0:03:23   62157.8      0.03       0.1       0.0                           1344625.2500
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:03:24   62157.8      0.03       0.1       0.0                           1344625.2500
+    0:03:24   62162.1      0.03       0.1       0.0                           1344661.0000
+
+
+  Beginning Leakage Power Optimization  (max_leakage_power 0)
+  ------------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:03:31   62078.8      0.03       0.1       0.0                           1342413.0000
+  Global Optimization (Phase 35)
+  Global Optimization (Phase 36)
+  Global Optimization (Phase 37)
+  Global Optimization (Phase 38)
+  Global Optimization (Phase 39)
+  Global Optimization (Phase 40)
+  Global Optimization (Phase 41)
+  Global Optimization (Phase 42)
+  Global Optimization (Phase 43)
+  Global Optimization (Phase 44)
+  Global Optimization (Phase 45)
+  Global Optimization (Phase 46)
+  Global Optimization (Phase 47)
+  Global Optimization (Phase 48)
+  Global Optimization (Phase 49)
+  Global Optimization (Phase 50)
+  Global Optimization (Phase 51)
+    0:04:02   59470.7      0.00       0.0       0.0                           1276215.8750
+    0:04:02   59470.7      0.00       0.0       0.0                           1276215.8750
+    0:04:02   59470.7      0.00       0.0       0.0                           1276215.8750
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:04   59464.0      0.00       0.0       0.0                           1275705.2500
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:04:06   59464.0      0.00       0.0       0.0                           1275705.2500
+    0:04:09   59349.7      0.01       0.0       0.0                           1272499.5000
+    0:04:09   59355.0      0.00       0.0       0.0                           1272847.2500
+    0:04:09   59355.0      0.00       0.0       0.0                           1272847.2500
+    0:04:12   59353.9      0.00       0.0       0.0                           1272881.6250
+    0:04:27   59322.5      0.00       0.0       0.0                           1272208.7500
+    0:04:29   59310.6      0.00       0.0       0.0                           1271807.7500
+    0:04:29   59339.5      0.00       0.0       0.0                           1272857.2500
+    0:04:31   59308.2      0.00       0.0       0.0                           1271688.7500
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Warning: Design 'conv_128_32' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+     Net 'conv/clk': 1841 load(s), 1 driver(s)
+Information: State dependent leakage is now switched from off to on.
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+1
+report_area
+ 
+****************************************
+Report : area
+Design : conv_128_32
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 10 17:44:40 2019
+****************************************
+
+Information: Updating design information... (UID-85)
+Warning: Design 'conv_128_32' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+Number of ports:                           45
+Number of nets:                           721
+Number of cells:                          147
+Number of combinational cells:            116
+Number of sequential cells:                28
+Number of macros/black boxes:               0
+Number of buf/inv:                         13
+Number of references:                      28
+
+Combinational area:              50963.472922
+Buf/Inv area:                     3669.469964
+Noncombinational area:            8344.685700
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                 59308.158622
+Total area:                 undefined
+1
+report_power
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : conv_128_32
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 10 17:44:42 2019
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+conv_128_32            5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  =   5.1899 mW   (82%)
+  Net Switching Power  =   1.1299 mW   (18%)
+                         ---------
+Total Dynamic Power    =   6.3198 mW  (100%)
+
+Cell Leakage Power     =   1.1160 mW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register       4.5850e+03           83.0498        1.4380e+05        4.8118e+03  (  64.71%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational    604.9125        1.0469e+03        9.7216e+05        2.6239e+03  (  35.29%)
+--------------------------------------------------------------------------------------------------
+Total          5.1899e+03 uW     1.1299e+03 uW     1.1160e+06 nW     7.4358e+03 uW
+1
+report_timing
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : conv_128_32
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 10 17:44:42 2019
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: mx/data_out_reg[9][5]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: conv/m_data_out_y_reg[19]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  conv_128_32        5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  mx/data_out_reg[9][5]/CK (DFF_X1)                       0.00 #     0.00 r
+  mx/data_out_reg[9][5]/Q (DFF_X1)                        0.15       0.15 r
+  mx/data_out[9][5] (memory_WIDTH8_SIZE128_LOGSIZE7)      0.00       0.15 r
+  conv/m_data_x[9][5] (convolutioner)                     0.00       0.15 r
+  conv/U5074/ZN (OR2_X1)                                  0.05       0.20 r
+  conv/U193/ZN (NAND2_X1)                                 0.06       0.26 f
+  conv/U6831/ZN (AND2_X1)                                 0.06       0.33 f
+  conv/U6832/ZN (INV_X1)                                  0.06       0.39 r
+  conv/U6834/ZN (AOI21_X1)                                0.05       0.43 f
+  conv/U6868/ZN (XNOR2_X1)                                0.06       0.50 f
+  conv/U6878/S (FA_X1)                                    0.16       0.65 r
+  conv/U6871/ZN (INV_X1)                                  0.03       0.68 f
+  conv/U6874/ZN (NAND2_X1)                                0.03       0.70 r
+  conv/U6875/ZN (NAND2_X1)                                0.03       0.73 f
+  conv/U7947/ZN (NAND2_X1)                                0.03       0.76 r
+  conv/U7948/ZN (NAND2_X1)                                0.02       0.79 f
+  conv/U7950/ZN (AOI21_X1)                                0.05       0.84 r
+  conv/U8883/CO (FA_X1)                                   0.08       0.91 r
+  conv/U9379/ZN (NAND2_X1)                                0.03       0.94 f
+  conv/U9380/ZN (NAND2_X1)                                0.04       0.98 r
+  conv/U9381/Z (XOR2_X1)                                  0.07       1.05 r
+  conv/U9382/ZN (AND2_X1)                                 0.05       1.09 r
+  conv/U10039/S (FA_X1)                                   0.11       1.21 f
+  conv/U10028/CO (FA_X1)                                  0.11       1.32 f
+  conv/U10030/ZN (XNOR2_X1)                               0.06       1.38 f
+  conv/U10035/ZN (XNOR2_X1)                               0.06       1.44 f
+  conv/U10066/CO (FA_X1)                                  0.10       1.55 f
+  conv/U10511/CO (FA_X1)                                  0.10       1.65 f
+  conv/U10570/CO (FA_X1)                                  0.09       1.74 f
+  conv/U10576/ZN (OAI21_X1)                               0.04       1.79 r
+  conv/U10578/ZN (NAND2_X1)                               0.03       1.82 f
+  conv/U10589/ZN (XNOR2_X1)                               0.06       1.88 f
+  conv/U100/ZN (XNOR2_X1)                                 0.06       1.94 f
+  conv/U10635/ZN (NAND2_X1)                               0.05       1.99 r
+  conv/U10646/ZN (AND3_X1)                                0.06       2.04 r
+  conv/U10647/ZN (OAI211_X1)                              0.04       2.08 f
+  conv/U10651/ZN (NAND2_X1)                               0.04       2.12 r
+  conv/U10660/ZN (XNOR2_X1)                               0.06       2.17 r
+  conv/U257/ZN (NAND2_X1)                                 0.03       2.20 f
+  conv/m_data_out_y_reg[19]/D (DFF_X1)                    0.01       2.21 f
+  data arrival time                                                  2.21
+
+  clock clk (rise edge)                                   2.25       2.25
+  clock network delay (ideal)                             0.00       2.25
+  conv/m_data_out_y_reg[19]/CK (DFF_X1)                   0.00       2.25 r
+  library setup time                                     -0.04       2.21
+  data required time                                                 2.21
+  --------------------------------------------------------------------------
+  data required time                                                 2.21
+  data arrival time                                                 -2.21
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
+write -f verilog $TOP_MOD_NAME -output gates.v -hierarchy
+Writing verilog file '/home/home5/patilh/ese507work/proj2/Project-2/Part3/gates.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+quit
+
+Thank you...
