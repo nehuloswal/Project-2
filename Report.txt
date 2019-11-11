@@ -38,7 +38,7 @@ Control logic for 128x32 convolution
 There was no major change in the control logic. Only changes were to the address sizes, sizes of the convolvers output sizes and some conditions to denote conv_done and condition to assert valid_y.
 
 Part3 
-Answer. We tried mainly two things.
+Answer a. We tried mainly two things.
 1. Increasing parallelism - We increased the number of multpliers to 32 (or Length of vextor f) and connected their outputs to a single adder with 32 inputs. Hence a single output is ready in one clock cycle. This offered us a significant reduction in number of clock cycles required for one complete convolution. For part 2 we required 3424 clock cycles while after introducing parallelism we were able to perform same operation in 417 clock cycles. This is a 8 times improvement.
 2. Using Designware modules: We used DW02_mult instance and replaced our 32 multipliers with this Designware multiplier. We tried for designware adder but we could not find a suitable replacement for 32 input adder. This helped us improve our clock period from 2.30 nsec to 2.25 nsec.
 
@@ -46,3 +46,11 @@ We also tried a couple of ideas but could not implement them without errors.
 1. Overlapping input and output - We used different read and write addresses for memory and based on their current locations, we tried to load values for next convolution while the current convolution was being performed. However we were unsucessful in solving all the timing problems by the submission deadline and hence this approach did not work.
 2. Replacing the input memory with registers - We had thought of using the input memory with registers. This would have enabled us to complete one convolution in 130 clock cycles (128 clock cycles to load data and 1 clock cycle to perform the arithematic operation and 1 clock cycle to output the result). However we never got time to implement this.
 
+Answer b.
+
+Answer c. 
+
+Answer d. In order to optimize for energy per arithematic, we should optimize by increasing parallelism and reducing the 
+
+Answer e. Simplest way to increase the efficiency is to have N + M (160) input ports to load the data and instead of streaming in the data simply putting each value of an individual port. This will ensure that all the data would be loaded in one single clock cycle. This saves us 127 clock cycles in our design. Due to this our design will be faster by (417/(417 - 127)) 1.43 times. 
+Lets take an ideal system which completes convolution operations in one cycle. For this system it will take 128 cycles to input data + 1 to perform conv operation + 97 cycles to output data (Here the results of accumulator are stored in different flip flops and we switch between the flip flops to send correct output) which is 226 cycles. By having 160 input ports and loading data parallely and 97 output ports to output data parallely. Such a system would perform the convolution in 3 cycles. Hence the speedup would be 75.63 times.
